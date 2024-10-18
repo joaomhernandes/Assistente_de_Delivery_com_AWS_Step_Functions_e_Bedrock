@@ -1,55 +1,55 @@
 {
   "Comment": "Assistente de Delivery usando AWS Step Functions e Bedrock",
-  "StartAt": "ReceberPedido",
+  "StartAt": "Receber_Pedido",
   "States": {
-    "ReceberPedido": {
+    "Receber_Pedido": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:ReceberPedidoFunction",
-      "Next": "VerificarDisponibilidade"
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:Receber_PedidoFunction",
+      "Next": "Verificar_Disponibilidade"
     },
-    "VerificarDisponibilidade": {
+    "Verificar_Disponibilidade": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:VerificarDisponibilidadeFunction",
-      "Next": "CalcularCustoEntrega"
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:Verificar_DisponibilidadeFunction",
+      "Next": "Custo_Entrega"
     },
-    "CalcularCustoEntrega": {
+    "Custo_Entrega": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:CalcularCustoEntregaFunction",
-      "Next": "ConfirmarPedido"
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:Custo_EntregaFunction",
+      "Next": "Confirmar_Pedido"
     },
-    "ConfirmarPedido": {
+    "Confirmar_Pedido": {
       "Type": "Choice",
       "Choices": [
         {
           "Variable": "$.disponibilidade",
           "BooleanEquals": true,
-          "Next": "ProcessarPagamento"
+          "Next": "Pagamento"
         },
         {
           "Variable": "$.disponibilidade",
           "BooleanEquals": false,
-          "Next": "NotificarIndisponibilidade"
+          "Next": "Indisponivel"
         }
       ]
     },
-    "ProcessarPagamento": {
+    "Pagamento": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:ProcessarPagamentoFunction",
-      "Next": "NotificarCliente"
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:PagamentoFunction",
+      "Next": "Notificar"
     },
-    "NotificarIndisponibilidade": {
+    "Indisponivel": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:NotificarIndisponibilidadeFunction",
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:IndisponivelFunction",
       "End": true
     },
-    "NotificarCliente": {
+    "Notificar": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:NotificarClienteFunction",
-      "Next": "AcompanharEntrega"
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:NotificarFunction",
+      "Next": "Entrega"
     },
-    "AcompanharEntrega": {
+    "Entrega": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:AcompanharEntregaFunction",
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:EntregaFunction",
       "End": true
     }
   }
