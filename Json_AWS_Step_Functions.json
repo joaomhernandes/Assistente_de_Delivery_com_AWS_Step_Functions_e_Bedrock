@@ -2,22 +2,22 @@
   "Comment": "Assistente de Delivery usando AWS Step Functions e Bedrock",
   "StartAt": "Receber_Pedido",
   "States": {
-    "Receber_Pedido": {
+    "Pedido": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:Receber_PedidoFunction",
-      "Next": "Verificar_Disponibilidade"
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:PedidoFunction",
+      "Next": "Disponibilidade"
     },
-    "Verificar_Disponibilidade": {
+    "Disponibilidade": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:Verificar_DisponibilidadeFunction",
-      "Next": "Custo_Entrega"
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:DisponibilidadeFunction",
+      "Next": "Custo"
     },
-    "Custo_Entrega": {
+    "Custo": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:Custo_EntregaFunction",
-      "Next": "Confirmar_Pedido"
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:CustoFunction",
+      "Next": "Confirmar"
     },
-    "Confirmar_Pedido": {
+    "Confirmar": {
       "Type": "Choice",
       "Choices": [
         {
